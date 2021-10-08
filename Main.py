@@ -197,16 +197,19 @@ def calc_f(tile: Tile, end):
 
 def a_star(start, end, grid):
     opened = []
+    #opened = BinaryHeap(5000)
     heapq.heapify(opened)
     index = 0
     # closed = BinaryHeap(100)
     s = grid[start[0]][start[1]]
     s.g = 0
     heapq.heappush(opened, (0, s))
+    #opened.insert(s)
     iteration = 0
     while True:
         iteration += 1
         current = heapq.heappop(opened)[1]
+        #current = opened.extract()
         index -= 1
         # print(current.parent)
         if (current is None):
@@ -234,7 +237,7 @@ def a_star(start, end, grid):
 
                 if not n.closed:
                     index += 1
-
+                    #opened.insert(n)
                     heapq.heappush(opened, (n.f, n))
 
 
