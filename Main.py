@@ -197,19 +197,19 @@ def calc_f(tile: Tile, end):
 
 def a_star(start, end, grid):
     opened = []
-    #opened = BinaryHeap(5000)
+    # opened = BinaryHeap(5000)
     heapq.heapify(opened)
     index = 0
     # closed = BinaryHeap(100)
     s = grid[start[0]][start[1]]
     s.g = 0
     heapq.heappush(opened, (0, s))
-    #opened.insert(s)
+    # opened.insert(s)
     iteration = 0
     while True:
         iteration += 1
         current = heapq.heappop(opened)[1]
-        #current = opened.extract()
+        # current = opened.extract()
         index -= 1
         # print(current.parent)
         if (current is None):
@@ -237,7 +237,7 @@ def a_star(start, end, grid):
 
                 if not n.closed:
                     index += 1
-                    #opened.insert(n)
+                    # opened.insert(n)
                     heapq.heappush(opened, (n.f, n))
 
 
@@ -286,6 +286,12 @@ def main():
         draw_main(game_window, my_grid)  # draws the game window
 
     print("hello world")
+
+
+# TODO make sure start and end arent blocked
+# TODO convert to our own heap implementation
+# TODO comments on A* algorithm
+# TODO better visualizations
 
 
 if __name__ == "__main__":
