@@ -182,25 +182,17 @@ def dfs_block(list_in, x, y):  # method for initializing all blocks via dfs
             if not t.initialize:
                 t.initialize = True
                 r = np.random.randint(0, 10)
-                if r < 0:  # gives a 30% chance of being a block
+                if r < 3:  # gives a 30% chance of being a block
                     t.is_block = True
                     t.color = BLACK
                 stack.append(t)  # add neighbor to stack
 
 
-def calc_g(tile: Tile):
-    min_g = 10000
-    for n in tile.neighbors:
-        if n.g < min_g:
-            min_g = n.g
-    tile.g = min_g + 1
-
-
 def calc_f(tile: Tile, end):
-    #print(tile.x, tile.y)
+    # print(tile.x, tile.y)
     tile.h = abs(end[0] - tile.x) + abs(end[1] - tile.y)
-    #print(tile.h, tile.x, tile.y, end)
-    tile.f = tile.h
+    # print(tile.h, tile.x, tile.y, end)
+    tile.f = tile.h + tile.g
 
 
 def a_star(start, end, grid):
@@ -223,6 +215,9 @@ def a_star(start, end, grid):
         current.closed = True
 
         if current.x == start[0] and current.y == start[1] and iteration != 1:
+            for n in current.neighbors:
+                if (n.g + 1 < current.g):
+                    current.parent = n
             return
 
         if current.x == end[0] and current.y == end[1]:
@@ -231,7 +226,8 @@ def a_star(start, end, grid):
         for n in current.neighbors:
             if n.closed or n.is_block or n is None:
                 continue
-            calc_g(n)
+            n.g = current.g + 1
+            print(n.g, current.g)
             if n.g > current.g or not n.closed:
                 calc_f(n, end)
                 n.parent = current
@@ -251,7 +247,8 @@ def draw_path(start, end, grid):
             return
         current.color = "RED"
         current = current.parent
-        print(current.g, current.h)
+        # print(current.g, current.h)
+        # print(current.neighbors)
 
 
 def main():
@@ -268,9 +265,9 @@ def main():
 
     start = (int(random() * 100), int(random() * 100))
     end = (int(random() * 100), int(random() * 100))
-#    start = (50, 50)
-#    end = (51, 75)
-    #print(start, end)
+    #    start = (50, 50)
+    #    end = (51, 75)
+    # print(start, end)
 
     a_star(start, end, my_grid)
 
